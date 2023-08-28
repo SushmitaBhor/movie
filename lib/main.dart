@@ -41,7 +41,7 @@ class _HomeState extends State<Home> {
   List topratedmovies = [];
   List tv = [];
 
-  List<bool> _selections = List.generate(3, (i) => false);
+  final List<bool> _selections = List.generate(3, (i) => false);
 
   loadMovies() async {
     tmdbWithCustomLogs = TMDB(ApiKeys(apiKey, apiReadAccessToken),
