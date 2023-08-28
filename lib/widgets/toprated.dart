@@ -16,51 +16,8 @@ class TopRated extends StatelessWidget {
         children: [
           modified_text(text: 'Top Rated Movies',size: 26,),
           addVerticalSize(),
-          Container(  height: 800,
-            child: GridView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: toprated.length,
-                itemBuilder: (context,index){
-                  return InkWell(
-                    onTap: (){
+          grid(list: toprated,path:'poster_path',namePath: 'title',height: 230.0 ,mainHeight: 900.0),
 
-                    },
-                    child: Container(width: 250,
-                      child: Column(
-                        children: [
-
-                          Container(
-                            width: 250,
-                            height: 200,
-
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: CachedNetworkImage(
-                                fit: BoxFit.cover,
-                                imageUrl: 'http://image.tmdb.org/t/p/w500'+toprated[index]['poster_path'].toString(),
-                                placeholder: (context, url) =>
-                                    Center(child: new CircularProgressIndicator()),
-                                errorWidget: (context, url, error) =>
-                                new Icon(Icons.error),
-                              ),
-                            ),
-                          ),
-                          addVerticalSize(),
-                          Flexible(
-                            child: Container(width: 120,
-                              child: modified_text(
-                                text: toprated[index]['title']!=null?toprated[index]['title']:'Loading',
-                                size: 16,align: TextAlign.center,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                }, gridDelegate:                   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,mainAxisSpacing: 10),
-            ),
-          ),
         ],
       ),
     );

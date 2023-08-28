@@ -19,53 +19,8 @@ class TV extends StatelessWidget {
             size: 26,
           ),
           addVerticalSize(),
-          Container(
-            height: 800,
-            child: GridView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: tv.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {},
-                  child: Container(
+          grid(list: tv,path:'backdrop_path',namePath: 'original_name' ),
 
-                    width: 250,
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 250,
-                          height: 200,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: CachedNetworkImage(
-                              fit: BoxFit.cover,
-                              imageUrl: 'http://image.tmdb.org/t/p/w500' +
-                                  tv[index]['backdrop_path'].toString(),
-                              placeholder: (context, url) =>
-                                  Center(child: new CircularProgressIndicator()),
-                              errorWidget: (context, url, error) =>
-                                  new Icon(Icons.error),
-                            ),
-                          ),
-                        ),
-                        addVerticalSize(),
-                        Flexible(
-                          child: modified_text(
-                            text: tv[index]['original_name'] != null
-                                ? tv[index]['original_name']
-                                : 'Loading',
-                            size: 16,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              },
-              gridDelegate:
-                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,mainAxisSpacing: 10),
-            ),
-          ),
         ],
       ),
     );
