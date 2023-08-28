@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie/constant.dart';
 import 'package:movie/utils/text.dart';
+import 'package:movie/widgets/searchBar.dart';
 import 'package:movie/widgets/toprated.dart';
 import 'package:movie/widgets/trending.dart';
 import 'package:movie/widgets/tv.dart';
@@ -39,7 +40,7 @@ class _HomeState extends State<Home> {
   List trendingmovies = [];
   List topratedmovies=[];
   List tv = [];
-  List newList=[];
+
 
   loadMovies() async {
      tmdbWithCustomLogs = TMDB(ApiKeys(apiKey, apiReadAccessToken),
@@ -59,7 +60,13 @@ class _HomeState extends State<Home> {
     });
     print(trendingmovies);
   }
-
+onItemChanged(v)async{
+  Map search=await tmdbWithCustomLogs.v3.search.queryMovies(v.toString().toLowerCase());
+  setState(() {
+    newList=search['results'];
+  });
+  print("_____________________________________${newList}");
+}
   @override
   Widget build(BuildContext context) {
 
@@ -71,48 +78,7 @@ class _HomeState extends State<Home> {
       ),
       body: ListView(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            controller: textController,
-            style:TextStyle(
-                color: const Color(0xff666666),
-                fontWeight: FontWeight.w300,
-                fontSize: 16.0),
-            decoration: InputDecoration(isDense: true,
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-                contentPadding: EdgeInsets.only(left: 20),focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-                suffixIcon: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      width: 1,
-                      height: 30,
-                      color: const Color(0xffC5C5C5),
-                    ),
-                    const SizedBox(width: 20),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 17.0),
-                      child: Icon(Icons.search,color: kbackgroundColor,)
-                    )
-                  ],
-                ),
-                hintText: 'Search',hintStyle: TextStyle(
-                    color: const Color(0xff666666),
-                    fontWeight: FontWeight.w300,
-                    fontSize: 16.0),
-                filled: true,
-                fillColor: const Color(0xffFBEEFE)),
-            onChanged:(v) async{
-          Map search=await tmdbWithCustomLogs.v3.search.queryMovies(v.toString().toLowerCase());
-          setState(() {
-          newList=search['results'];
-          });
-          print("_____________________________________${newList}");
-          }
-          ),
-        ),
+        SearchMovies(onItemChanged:onItemChanged),
         TrendingMovies(trending:  newList.isEmpty? trendingmovies:newList,),
         TV(tv:newList.isEmpty?  tv:newList,),
         TopRated(toprated: newList.isEmpty? topratedmovies:newList,),
