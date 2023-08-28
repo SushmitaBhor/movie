@@ -59,8 +59,8 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: modified_text(text: 'Flutter Movie App',),
+        backgroundColor: kbackgroundColor,
+        title: modified_text(text: 'Flutter Movie App❤️',),
 
       ),
       body: ListView(
