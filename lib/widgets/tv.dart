@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/constant.dart';
 import 'package:movie/utils/text.dart';
+import 'package:movie/widgets/customGrid.dart';
 
 class TV extends StatelessWidget {
   final List tv;
@@ -19,7 +20,7 @@ class TV extends StatelessWidget {
             size: 26,
           ),
           addVerticalSize(),
-          grid(list: tv,path:'backdrop_path',namePath: 'original_name' ),
+          GridCustom(list: tv,path:'backdrop_path',namePath: 'original_name',borderRadius:  BorderRadius.circular(10) ),
 
         ],
       ),
