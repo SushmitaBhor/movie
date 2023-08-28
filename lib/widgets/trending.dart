@@ -23,7 +23,7 @@ class TrendingMovies extends StatelessWidget {
           GridCustom(
             list: trending,
             path: 'poster_path',
-            namePath: 'title',
+            namePath: 'title',mainHeight: 1000.0,
           ),
         ],
       ),

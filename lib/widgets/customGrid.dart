@@ -39,8 +39,8 @@ class GridCustom extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => Description(
-                          name: list[index][namePath],
-                          description: list[index]['overview'],
+                          name: list[index][namePath]!=null?list[index][namePath].toString():'loading',
+                          description: list[index]['overview']!=null?list[index]['overview'].toString():'loading',
                           bannerurl: list[index][path],
                           posterurl: list[index][path],
                           vote: list[index]['vote_average']!=null?list[index]['vote_average'].toString() : 'loading',
