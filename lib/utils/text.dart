@@ -4,9 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 class modified_text extends StatelessWidget {
   final String text;
   final Color color;
+  final TextAlign align;
   final double size;
   modified_text(
-      {Key? key, required this.text,  this.color=Colors.white,  this.size=20,})
+      {Key? key, required this.text,  this.color=Colors.white,  this.size=20,  this.align=TextAlign.center,})
       : super(key: key);
 
   @override

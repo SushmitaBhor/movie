@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   tmdb_api:
   google_fonts:
+  cached_network_image:
+
 
 dev_dependencies:
   flutter_test:
