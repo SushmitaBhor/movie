@@ -11,14 +11,21 @@ class TopRated extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          modified_text(text: 'Top Rated Movies',size: 26,),
+          modified_text(
+            text: 'Top Rated Movies',
+            size: 26,
+          ),
           addVerticalSize(),
-          GridCustom(list: toprated,path:'poster_path',namePath: 'title',height: 230.0 ,mainHeight: 900.0),
-
+          GridCustom(
+              list: toprated,
+              path: 'poster_path',
+              namePath: 'title',
+              height: 230.0,
+              mainHeight: 900.0),
         ],
       ),
     );

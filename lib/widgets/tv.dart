@@ -11,7 +11,7 @@ class TV extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -20,8 +20,11 @@ class TV extends StatelessWidget {
             size: 26,
           ),
           addVerticalSize(),
-          GridCustom(list: tv,path:'backdrop_path',namePath: 'original_name',borderRadius:  BorderRadius.circular(10) ),
-
+          GridCustom(
+              list: tv,
+              path: 'backdrop_path',
+              namePath: 'original_name',
+              borderRadius: BorderRadius.circular(10)),
         ],
       ),
     );

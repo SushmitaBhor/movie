@@ -10,18 +10,21 @@ class TrendingMovies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          modified_text(text: 'Trending Movies',size: 26,),
+          modified_text(
+            text: 'Trending Movies',
+            size: 26,
+          ),
           addVerticalSize(),
-          GridCustom(list: trending,path: 'poster_path',namePath: 'title',),
-
-
+          GridCustom(
+            list: trending,
+            path: 'poster_path',
+            namePath: 'title',
+          ),
         ],
       ),
     );
