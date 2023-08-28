@@ -8,6 +8,8 @@ final String apiReadAccessToken='eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MWQ3ZDQwZWY2Y2
 
 final Color kbackgroundColor=Colors.black;
 
+TextEditingController textController=TextEditingController();
+
 
 addVerticalSize(){
   return const SizedBox(height: 10,);

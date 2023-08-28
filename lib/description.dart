@@ -41,7 +41,7 @@ class Description extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Flexible(
-                flex: 1,
+                flex: 2,
                 child: Container(
                   margin: EdgeInsets.all(5),
                   height: 200,
@@ -49,7 +49,7 @@ class Description extends StatelessWidget {
                   child: Image.network( 'http://image.tmdb.org/t/p/w500' +posterurl,fit: BoxFit.cover,alignment: Alignment.center,),
                 ),
               ),
-              Flexible(flex: 1,
+              Flexible(flex: 2,
                 child: Container(
                   child: modified_text(text: description,size: 18,),
                 ),
