@@ -3,6 +3,7 @@ import 'package:movie/constant.dart';
 import 'package:movie/utils/text.dart';
 import 'package:movie/widgets/toprated.dart';
 import 'package:movie/widgets/trending.dart';
+import 'package:movie/widgets/tv.dart';
 import 'package:tmdb_api/tmdb_api.dart';
 
 void main() => runApp(const MyApp());
@@ -66,7 +67,8 @@ class _HomeState extends State<Home> {
       ),
       body: ListView(
       children: [
-        TopRated(toprated: topratedmovies),
+        TV(tv: tv,),
+        TopRated(toprated: topratedmovies,),
         TrendingMovies(trending: trendingmovies,),
       ],
       ),
