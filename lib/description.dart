@@ -38,14 +38,18 @@ class Description extends StatelessWidget {
             ),
             Container(padding: EdgeInsets.only(left: 10),child: modified_text(text: 'Releasing on\t-'+launch_on,size: 14,),)
          , Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                margin: EdgeInsets.all(5),
-                height: 200,
-                width: 100,
-                child: Image.network( 'http://image.tmdb.org/t/p/w500' +posterurl),
-              ),
               Flexible(
+                flex: 1,
+                child: Container(
+                  margin: EdgeInsets.all(5),
+                  height: 200,
+
+                  child: Image.network( 'http://image.tmdb.org/t/p/w500' +posterurl,fit: BoxFit.cover,alignment: Alignment.center,),
+                ),
+              ),
+              Flexible(flex: 1,
                 child: Container(
                   child: modified_text(text: description,size: 18,),
                 ),
