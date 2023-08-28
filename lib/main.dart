@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie/constant.dart';
 import 'package:movie/utils/text.dart';
+import 'package:movie/widgets/toprated.dart';
 import 'package:movie/widgets/trending.dart';
 import 'package:tmdb_api/tmdb_api.dart';
 
@@ -65,6 +66,7 @@ class _HomeState extends State<Home> {
       ),
       body: ListView(
       children: [
+        TopRated(toprated: topratedmovies),
         TrendingMovies(trending: trendingmovies,),
       ],
       ),
