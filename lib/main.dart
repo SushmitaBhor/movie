@@ -61,7 +61,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(    backgroundColor: kbackgroundColor,
       appBar: AppBar(
-
+        backgroundColor: kbackgroundColor,
         title: modified_text(text: 'Flutter Movie App❤️',),
 
       ),
