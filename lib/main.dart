@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie/constant.dart';
+import 'package:movie/utils/text.dart';
+import 'package:movie/widgets/trending.dart';
 import 'package:tmdb_api/tmdb_api.dart';
 
 void main() => runApp(const MyApp());
@@ -32,6 +34,8 @@ class _HomeState extends State<Home> {
   }
 
   List trendingmovies = [];
+  List topratedmovies=[];
+  List tv = [];
 
   loadMovies() async {
     TMDB tmdbWithCustomLogs = TMDB(ApiKeys(apiKey, apiReadAccessToken),
@@ -41,8 +45,12 @@ class _HomeState extends State<Home> {
         ));
 
     Map trendingResult = await tmdbWithCustomLogs.v3.trending.getTrending();
+    Map topratedResult = await tmdbWithCustomLogs.v3.movies.getTopRated();
+    Map tvResult = await tmdbWithCustomLogs.v3.tv.getPopular();
     setState(() {
       trendingmovies = trendingResult['results'];
+      topratedmovies = topratedResult['results'];
+      tv = tvResult['results'];
     });
     print(trendingmovies);
   }
@@ -51,7 +59,14 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter Movie App'),
+        backgroundColor: Colors.transparent,
+        title: modified_text(text: 'Flutter Movie App',),
+
+      ),
+      body: ListView(
+      children: [
+        TrendingMovies(trending: trendingmovies,),
+      ],
       ),
     );
   }
