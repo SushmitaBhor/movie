@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:movie/constant.dart';
 import 'package:movie/utils/text.dart';
+import 'package:movie/viewModel/movie_vm.dart';
+import 'package:movie/viewModel/popularMovieList_vm.dart';
 import 'package:movie/widgets/customGrid.dart';
-import 'package:movie/widgets/searchBar.dart';
+import 'package:movie/widgets/movieListPage.dart';
 import 'package:movie/widgets/tv.dart';
-import 'package:tmdb_api/tmdb_api.dart';
+import 'package:provider/provider.dart';
+
 
 void main() => runApp(const MyApp());
 
@@ -14,68 +17,32 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Home(),
+      home: ChangeNotifierProvider(
+          create: (context)=>PopularMovieListViewModel(),
+          child: Home()),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(brightness: Brightness.dark, primaryColor: Colors.green),
     );
   }
 }
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class Home extends StatelessWidget {
 
-  @override
-  State<Home> createState() => _HomeState();
-}
 
-class _HomeState extends State<Home> {
-  @override
-  void initState() {
-    loadMovies();
-    super.initState();
-  }
+  Home({Key? key}) : super(key: key);
 
-  late TMDB tmdbWithCustomLogs;
 
-  List trendingmovies = [];
+  List<MovieViewModel> trendingmovies = [];
   List popularmovies = [];
   List topratedmovies = [];
   List tv = [];
 
-  final List<bool> _selections = List.generate(2, (i) => false);
+   final List<bool>      _selections= List.generate(2, (i) => false);
 
-  loadMovies() async {
-    tmdbWithCustomLogs = TMDB(ApiKeys(apiKey, apiReadAccessToken),
-        logConfig: ConfigLogger(
-          showLogs: true,
-          showErrorLogs: true,
-        ));
-
-    Map trendingResult = await tmdbWithCustomLogs.v3.trending.getTrending();
-    Map popularResult = await tmdbWithCustomLogs.v3.movies.getPopular();
-    Map topratedResult = await tmdbWithCustomLogs.v3.movies.getTopRated();
-    Map tvResult = await tmdbWithCustomLogs.v3.tv.getPopular();
-
-    setState(() {
-      trendingmovies = trendingResult['results'];
-      popularmovies = popularResult['results'];
-      topratedmovies = topratedResult['results'];
-      tv = tvResult['results'];
-    });
-    print(popularmovies);
-  }
-
-  onItemChanged(v) async {
-    Map search = await tmdbWithCustomLogs.v3.search
-        .queryMovies(v.toString().toLowerCase());
-    setState(() {
-      newList = search['results'];
-    });
-    print("_____________________________________${newList}");
-  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: kbackgroundColor,
       appBar: AppBar(
@@ -85,58 +52,61 @@ class _HomeState extends State<Home> {
         ),
       ),
       body: ListView(
-        children: [
-          SearchMovies(onItemChanged: onItemChanged),
-          addVerticalSize(),
-          ToggleButtons(
-            isSelected: _selections,
-            onPressed: (int index) {
-              setState(() {
-                _selections[index] = !_selections[index];
-
-                if (index == 0 && _selections[index]) {
-                  newList = popularmovies;
-                } else if (index == 1 && !_selections[index]) {
-                  newList = topratedmovies;
-                }
-              });
-            },
             children: [
-              toggleButton(buttonName: "Most Popular"),
-              toggleButton(buttonName: "Top Rated"),
+              // SearchMovies(onItemChanged: onItemChanged),
+              addVerticalSize(),
+              ToggleButtons(
+                isSelected: _selections,
+                onPressed: (int index) {
+                    _selections[index] = !_selections[index];
 
+                    if (index == 0 && _selections[index]) {
+
+                      newList = trendingmovies;
+                    } else if (index == 1 && !_selections[index]) {
+                      newList = topratedmovies;
+                    }
+                },
+                children: [
+                  toggleButton(buttonName: "Most Popular"),
+                  toggleButton(buttonName: "Top Rated"),
+
+                ],
+              ),
+              // showList(
+              //     list:  vm.movies ??[] ,
+              //     listname: newList == popularmovies
+              //         ? "Most Popular Movies"
+              //         : newList.isEmpty
+              //         ? "Most Popular Movies"
+              //         : "Top Rated Movies"),
+Consumer<PopularMovieListViewModel>(
+    builder: (context, vm,__) {
+
+             return MovieListPage(vm: vm);}
+)
+              // showList(
+              //     list: newList.isEmpty ? topratedmovies : newList,
+              //     listname: newList == topratedmovies
+              //         ? "Top Rated Movies"
+              //         : newList.isEmpty
+              //         ? "Trending Movies"
+              //         : "Trending Movies"),
+              // showList(
+              //     list: newList.isEmpty ? trendingmovies : newList,
+              //     listname: newList == trendingmovies
+              //         ? "Trending Movies"
+              //         : newList.isEmpty
+              //         ? "Trending Movies"
+              //         : "Top Rated Movies"),
+              ,TV(
+                tv: newList.isEmpty ? tv : newList,
+              ),
             ],
           ),
-          showList(
-              list: newList.isEmpty ? popularmovies : newList,
-              listname: newList == popularmovies
-                  ? "Most Popular Movies"
-                  : newList.isEmpty
-                  ? "Most Popular Movies"
-                  : "Top Rated Movies"),
-
-          showList(
-              list: newList.isEmpty ? topratedmovies : newList,
-              listname: newList == topratedmovies
-                  ? "Top Rated Movies"
-                  : newList.isEmpty
-                      ? "Trending Movies"
-                      : "Trending Movies"),
-          showList(
-              list: newList.isEmpty ? trendingmovies : newList,
-              listname: newList == trendingmovies
-                  ? "Trending Movies"
-                  : newList.isEmpty
-                  ? "Trending Movies"
-                  : "Top Rated Movies"),
-          TV(
-            tv: newList.isEmpty ? tv : newList,
-          ),
-        ],
-      ),
     );
   }
-
+}
   toggleButton({required String buttonName}) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -150,7 +120,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  showList({required List list, required String listname}) {
+  showList({required List<MovieViewModel> list, required String listname}) {
     return Container(
       padding: const EdgeInsets.all(10),
       child: Column(
@@ -171,4 +141,4 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-}
+

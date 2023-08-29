@@ -38,8 +38,8 @@ dependencies:
   tmdb_api:
   google_fonts:
   cached_network_image:
-
-
+  provider:
+  http:
 dev_dependencies:
   flutter_test:
     sdk: flutter
