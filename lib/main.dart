@@ -38,10 +38,11 @@ class _HomeState extends State<Home> {
   late TMDB tmdbWithCustomLogs;
 
   List trendingmovies = [];
+  List popularmovies = [];
   List topratedmovies = [];
   List tv = [];
 
-  final List<bool> _selections = List.generate(3, (i) => false);
+  final List<bool> _selections = List.generate(2, (i) => false);
 
   loadMovies() async {
     tmdbWithCustomLogs = TMDB(ApiKeys(apiKey, apiReadAccessToken),
@@ -51,15 +52,17 @@ class _HomeState extends State<Home> {
         ));
 
     Map trendingResult = await tmdbWithCustomLogs.v3.trending.getTrending();
+    Map popularResult = await tmdbWithCustomLogs.v3.movies.getPopular();
     Map topratedResult = await tmdbWithCustomLogs.v3.movies.getTopRated();
     Map tvResult = await tmdbWithCustomLogs.v3.tv.getPopular();
 
     setState(() {
       trendingmovies = trendingResult['results'];
+      popularmovies = popularResult['results'];
       topratedmovies = topratedResult['results'];
       tv = tvResult['results'];
     });
-    print(trendingmovies);
+    print(popularmovies);
   }
 
   onItemChanged(v) async {
@@ -92,27 +95,26 @@ class _HomeState extends State<Home> {
                 _selections[index] = !_selections[index];
 
                 if (index == 0 && _selections[index]) {
-                  newList = trendingmovies;
+                  newList = popularmovies;
                 } else if (index == 1 && !_selections[index]) {
                   newList = topratedmovies;
-                } else if (index == 2 && !_selections[index]) {
-                  newList = [];
                 }
               });
             },
             children: [
               toggleButton(buttonName: "Most Popular"),
               toggleButton(buttonName: "Top Rated"),
-              toggleButton(buttonName: "Reset"),
+
             ],
           ),
           showList(
-              list: newList.isEmpty ? trendingmovies : newList,
-              listname: newList == trendingmovies
-                  ? "Trending Movies"
+              list: newList.isEmpty ? popularmovies : newList,
+              listname: newList == popularmovies
+                  ? "Most Popular Movies"
                   : newList.isEmpty
-                      ? "Trending Movies"
-                      : "Top Rated Movies"),
+                  ? "Most Popular Movies"
+                  : "Top Rated Movies"),
+
           showList(
               list: newList.isEmpty ? topratedmovies : newList,
               listname: newList == topratedmovies
@@ -120,6 +122,13 @@ class _HomeState extends State<Home> {
                   : newList.isEmpty
                       ? "Trending Movies"
                       : "Trending Movies"),
+          showList(
+              list: newList.isEmpty ? trendingmovies : newList,
+              listname: newList == trendingmovies
+                  ? "Trending Movies"
+                  : newList.isEmpty
+                  ? "Trending Movies"
+                  : "Top Rated Movies"),
           TV(
             tv: newList.isEmpty ? tv : newList,
           ),
