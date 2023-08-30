@@ -5,7 +5,6 @@ import 'package:movie/utils/text.dart';
 import 'package:movie/viewModel/popularMovieList_vm.dart';
 import 'package:movie/widgets/customGrid.dart';
 import 'package:movie/widgets/searchBar.dart';
-import 'package:movie/widgets/tv.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(const MyApp());
