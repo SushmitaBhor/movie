@@ -19,11 +19,9 @@ class TV extends StatelessWidget {
             size: 26,
           ),
           addVerticalSize(),
-          GridCustom(
-              list: tv,
-              path: 'backdrop_path',
-              namePath: 'original_name',
-              borderRadius: BorderRadius.circular(10)),
+          // GridCustom(
+          //     vm: tv,
+          //     borderRadius: BorderRadius.circular(10)),
         ],
       ),
     );

@@ -20,7 +20,7 @@ class Description extends StatelessWidget {
                 Positioned(child: Container(
                   height: 250,
                   width: MediaQuery.of(context).size.width,
-                  child:CachedNetworkImage(imageUrl: 'http://image.tmdb.org/t/p/w500' + posterurl ,fit: BoxFit.cover,
+                  child:CachedNetworkImage(imageUrl: posterurl ,fit: BoxFit.cover,
                     placeholder:(context,val)=>const Center(child: CircularProgressIndicator(),),errorWidget: (context,url,error)=>const Icon(Icons.error),)
            )),
                 Positioned(

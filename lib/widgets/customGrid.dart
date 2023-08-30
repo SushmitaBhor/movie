@@ -4,23 +4,36 @@ import 'package:movie/description.dart';
 
 import '../constant.dart';
 import '../utils/text.dart';
+import '../viewModel/popularMovieList_vm.dart';
 
-class GridCustom extends StatelessWidget {
+class GridCustom extends StatefulWidget {
+  PopularMovieListViewModel vm;
   List list;
-  String namePath, path;
   double height, width, mainHeight;
   BorderRadius borderRadius;
   GridCustom(
       {Key? key,
       this.width = 250.0,
+       required this.list,
       this.height = 200.0,
       this.borderRadius = BorderRadius.zero,
-      required this.list,
+      required this.vm,
       this.mainHeight = 800.0,
-      required this.namePath,
-      required this.path})
+     })
       : super(key: key);
 
+  @override
+  State<GridCustom> createState() => _GridCustomState();
+}
+
+class _GridCustomState extends State<GridCustom> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget.vm.fetchMovies('iron man');
+    widget.vm.fetchTopRatedMovies('iron man');
+  }
   @override
   Widget build(BuildContext context) {
     return grid();
@@ -28,10 +41,10 @@ class GridCustom extends StatelessWidget {
 
   grid() {
     return SizedBox(
-      height: mainHeight,
+      height: widget.mainHeight,
       child: GridView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: list.length,shrinkWrap: true,
+        itemCount: widget.vm.popularMovies.length,shrinkWrap: true,
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
@@ -39,23 +52,22 @@ class GridCustom extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => Description(
-                          name: list[index][namePath]!=null?list[index][namePath].toString():'loading',
-                          description: list[index]['overview']!=null?list[index]['overview'].toString():'loading',
-                          bannerurl: list[index][path],
-                          posterurl: list[index][path],
-                          vote: list[index]['vote_average']!=null?list[index]['vote_average'].toString() : 'loading',
-                          launch_on: list[index]['release_date']!=null?list[index]['release_date']:'loading')));
+                          name: widget.vm.popularMovies[index].title!,
+                          description: widget.vm.popularMovies[index].overview!,
+                          bannerurl: widget.vm.popularMovies[index].posterPath.toString(),
+                          posterurl: widget.vm.popularMovies[index].posterPath.toString(),
+                          vote: widget.vm.popularMovies[index].voteAverage.toString()!,
+                          launch_on: widget.vm.popularMovies[index].releaseDate!)));
             },
             child: Column(
               children: [
                 ClipRRect(
-                  borderRadius: borderRadius,
+                  borderRadius: widget.borderRadius,
                   child: CachedNetworkImage(
-                    width: width,
-                    height: height,
+                    width: widget.width,
+                    height: widget.height,
                     fit: BoxFit.cover,
-                    imageUrl: 'http://image.tmdb.org/t/p/w500' +
-                        list[index][path].toString(),
+                    imageUrl:widget.vm.popularMovies[index].posterPath!,
                     placeholder: (context, url) =>
                         Center(child: new CircularProgressIndicator()),
                     errorWidget: (context, url, error) => new Icon(Icons.error),
@@ -66,9 +78,7 @@ class GridCustom extends StatelessWidget {
                   child: Container(
                     width: 120,
                     child: modified_text(
-                      text: list[index][namePath] != null
-                          ? list[index][namePath]
-                          : 'Loading',
+                      text: widget.vm.popularMovies[index].title!,
                       size: 16,
                     ),
                   ),
