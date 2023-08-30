@@ -67,7 +67,7 @@ class _GridCustomState extends State<GridCustom> {
                     width: widget.width,
                     height: widget.height,
                     fit: BoxFit.cover,
-                    imageUrl:widget.vm.popularMovies[index].posterPath!,
+                    imageUrl:'http://image.tmdb.org/t/p/w500' +widget.vm.popularMovies[index].posterPath!,
                     placeholder: (context, url) =>
                         Center(child: new CircularProgressIndicator()),
                     errorWidget: (context, url, error) => new Icon(Icons.error),
