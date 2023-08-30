@@ -5,6 +5,7 @@ import '../web_services/webService.dart';
 class PopularMovieListViewModel extends ChangeNotifier {
   List<Result> popularMovies=[] ;
   List<Result> topRatedMovies=[] ;
+  List<Result> searchedMovies=[] ;
 
   fetchMovies(String keyword) async {
     final results =  await Webservice().fetchMovies(keyword);
@@ -15,6 +16,11 @@ class PopularMovieListViewModel extends ChangeNotifier {
   fetchTopRatedMovies(String keyword) async {
     final results =  await Webservice().fetchTopRatedMovies(keyword);
     topRatedMovies = results.map((item) => item).toList();
+    notifyListeners();
+  }
+  fetchSearchedMovies(String keyword) async {
+    final results =  await Webservice().fetchSearchedMovies(keyword);
+    searchedMovies = results.map((item) => item).toList();
     notifyListeners();
   }
 

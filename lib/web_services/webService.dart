@@ -42,4 +42,22 @@ return movie;
       throw Exception("Unable to perform request!");
     }
   }
+  Future<List<Result>> fetchSearchedMovies(String keyword) async {
+
+    final String url = "https://api.themoviedb.org/3/search/movie?api_key=91d7d40ef6cd4a35e4b291baa77dd09a&query=$keyword";
+    final response = await http.get(Uri.parse(url));
+    if(response.statusCode == 200) {
+
+      final body = jsonDecode(response.body);
+
+      final List<dynamic>  json = body['results'];
+      final List<Result> movie=json.map((e) => Result.fromJson(e)).toList();
+      print("searched movie ${response.body}");
+return movie;
+
+
+    } else {
+      throw Exception("Unable to perform request!");
+    }
+  }
 }

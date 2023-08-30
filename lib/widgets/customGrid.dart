@@ -33,6 +33,7 @@ class _GridCustomState extends State<GridCustom> {
     super.initState();
     widget.vm.fetchMovies('iron man');
     widget.vm.fetchTopRatedMovies('iron man');
+print("is serch empty ${widget.vm.searchedMovies.isEmpty}");
   }
   @override
   Widget build(BuildContext context) {

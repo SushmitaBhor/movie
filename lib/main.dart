@@ -32,7 +32,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final List<bool> _selections = List.generate(2, (i) => false);
-  List<Result> newList=[];
+  List<Result> newList = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,53 +47,66 @@ class _HomeState extends State<Home> {
           return ListView(
             shrinkWrap: true,
             children: [
-              SearchMovies(onItemChanged: (v){
-                List<Result> topMovies=  vm.topRatedMovies.map((e) => e).toList();
-                setState(() {
-                  newList=topMovies;
-                });
-              }),
+              SearchMovies(
+                onItemChanged: (v) {
+                  vm.fetchSearchedMovies(v.toString().toLowerCase());
+
+                  setState(() {});
+                  print(textController.text);
+                },
+                onSubmitted: (v) {
+                  setState(() {
+                    vm.popularMovies = vm.searchedMovies;
+                    vm.topRatedMovies = vm.searchedMovies;
+                  });
+                },
+                controller: textController,
+              ),
               addVerticalSize(),
               ToggleButtons(
                 isSelected: _selections,
                 onPressed: (int index) {
+                  _selections[index] = !_selections[index];
 
-                    _selections[index] = !_selections[index];
-
-                    if (index == 0 && _selections[index]) {
-                      setState((){
-                      newList = vm.popularMovies;});
-
-                    } else if (index == 1 && !_selections[index]) {
-                      setState((){
-                      newList = vm.topRatedMovies;
-          });
-                    }
-
+                  if (index == 0 && _selections[index]) {
+                    setState(() {
+                      vm.topRatedMovies = vm.popularMovies;
+                      vm.searchedMovies = vm.popularMovies;
+                    });
+                  } else if (index == 1 && !_selections[index]) {
+                    setState(() {
+                      vm.popularMovies = vm.topRatedMovies;
+                      vm.searchedMovies = vm.topRatedMovies;
+                    });
+                  }
                 },
                 children: [
                   toggleButton(buttonName: "Most Popular"),
                   toggleButton(buttonName: "Top Rated"),
-
                 ],
               ),
-
               getMoviesList(
                   vm: vm,
-                  movieList:newList.isEmpty ? vm.popularMovies:newList,
+                  movieList: vm.searchedMovies.isEmpty
+                      ? vm.popularMovies
+                      : vm.searchedMovies,
                   listType: newList == vm.popularMovies
                       ? "Most Popular Movies"
                       : newList.isEmpty
                           ? "Most Popular Movies"
-                          : "Top Rated Movies",context: context),
+                          : "Top Rated Movies",
+                  context: context),
               getMoviesList(
                   vm: vm,
-                  movieList:newList.isEmpty? vm.topRatedMovies:newList,
+                  movieList: vm.searchedMovies.isEmpty
+                      ? vm.topRatedMovies
+                      : vm.searchedMovies,
                   listType: newList == vm.topRatedMovies
                       ? "Top Rated Movies"
                       : newList.isEmpty
                           ? "Trending Movies"
-                          : "Trending Movies",context: context)
+                          : "Trending Movies",
+                  context: context)
             ],
           );
         }));
@@ -114,7 +127,10 @@ toggleButton({required String buttonName}) {
 }
 
 Widget getMoviesList(
-    {required PopularMovieListViewModel vm,required List<Result> movieList, required String listType,required BuildContext context}) {
+    {required PopularMovieListViewModel vm,
+    required List<Result> movieList,
+    required String listType,
+    required BuildContext context}) {
   return Container(
     padding: const EdgeInsets.all(10),
     child: Column(

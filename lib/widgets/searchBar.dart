@@ -3,7 +3,9 @@ import '../constant.dart';
 
 class SearchMovies extends StatefulWidget {
  void Function(String)? onItemChanged;
-   SearchMovies({Key? key,this.onItemChanged}) : super(key: key);
+ void Function(String)? onSubmitted;
+ final TextEditingController  controller;
+   SearchMovies({Key? key,this.onItemChanged,this.onSubmitted,required this.controller}) : super(key: key);
 
   @override
   State<SearchMovies> createState() => _SearchMoviesState();
@@ -16,7 +18,7 @@ class _SearchMoviesState extends State<SearchMovies> {
     return  Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
-          controller: textController,
+          controller: widget.controller,
           style:TextStyle(
               color: const Color(0xff666666),
               fontWeight: FontWeight.w300,
@@ -40,13 +42,15 @@ class _SearchMoviesState extends State<SearchMovies> {
                   )
                 ],
               ),
+
               hintText: 'Search',hintStyle: TextStyle(
                   color: const Color(0xff666666),
                   fontWeight: FontWeight.w300,
                   fontSize: 16.0),
               filled: true,
               fillColor: const Color(0xffFBEEFE)),
-          onChanged:widget.onItemChanged
+          onChanged:widget.onItemChanged,
+        onSubmitted: widget.onSubmitted,
       ),
     );
   }
