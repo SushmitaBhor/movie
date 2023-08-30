@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
 }
 
 class Home extends StatefulWidget {
- const Home({Key? key}) : super(key: key);
+  const Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -84,6 +84,8 @@ class _HomeState extends State<Home> {
         print(textController.text);
       },
       onSubmitted: (v) {
+        FocusScope.of(context).unfocus();
+
         setState(() {
           vm.popularMovies = vm.searchedMovies;
           vm.topRatedMovies = vm.searchedMovies;
@@ -97,20 +99,23 @@ class _HomeState extends State<Home> {
     return ToggleButtons(
       isSelected: _selections,
       onPressed: (int index) {
+        vm.fetchTopRatedMovies('iron man');
+        vm.fetchMovies('iron man');
+        textController.clear();
         setState(() {
           _selections[index] = !_selections[index];
         });
 
         if (index == 0 && _selections[index]) {
           setState(() {
-            vm.fetchMovies('iron man');
             vm.topRatedMovies = vm.popularMovies;
+            vm.searchedMovies = vm.popularMovies;
             newList = vm.popularMovies;
           });
         } else if (index == 1 && !_selections[index]) {
           setState(() {
-            vm.fetchTopRatedMovies('iron man');
             vm.popularMovies = vm.topRatedMovies;
+            vm.searchedMovies = vm.topRatedMovies;
             newList = vm.topRatedMovies;
           });
         }
@@ -144,7 +149,8 @@ class _HomeState extends State<Home> {
       child: MoviesListPage(
         vm: vm,
         movieList: movieList,
-        mainHeight: 900.0,borderRadius: BorderRadius.circular(16),
+        mainHeight: 900.0,
+        borderRadius: BorderRadius.circular(16),
       ),
     );
   }
