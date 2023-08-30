@@ -32,7 +32,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final List<bool> _selections = List.generate(2, (i) => false);
-
+  List<Result> newList=[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,21 +47,29 @@ class _HomeState extends State<Home> {
           return ListView(
             shrinkWrap: true,
             children: [
-              SearchMovies(onItemChanged: (v){}),
+              SearchMovies(onItemChanged: (v){
+                List<Result> topMovies=  vm.topRatedMovies.map((e) => e).toList();
+                setState(() {
+                  newList=topMovies;
+                });
+              }),
               addVerticalSize(),
               ToggleButtons(
                 isSelected: _selections,
                 onPressed: (int index) {
-                  setState((){
+
                     _selections[index] = !_selections[index];
 
                     if (index == 0 && _selections[index]) {
-                      newList = vm.popularMovies;
+                      setState((){
+                      newList = vm.popularMovies;});
 
                     } else if (index == 1 && !_selections[index]) {
+                      setState((){
                       newList = vm.topRatedMovies;
+          });
                     }
-                  });
+
                 },
                 children: [
                   toggleButton(buttonName: "Most Popular"),
@@ -70,22 +78,22 @@ class _HomeState extends State<Home> {
                 ],
               ),
 
-              showList(
+              getMoviesList(
                   vm: vm,
-                  list:newList.isEmpty ? vm.popularMovies:newList,
-                  listname: newList == vm.popularMovies
+                  movieList:newList.isEmpty ? vm.popularMovies:newList,
+                  listType: newList == vm.popularMovies
                       ? "Most Popular Movies"
                       : newList.isEmpty
                           ? "Most Popular Movies"
-                          : "Top Rated Movies"),
-              showList(
+                          : "Top Rated Movies",context: context),
+              getMoviesList(
                   vm: vm,
-                  list:newList.isEmpty? vm.topRatedMovies:newList,
-                  listname: newList == vm.topRatedMovies
+                  movieList:newList.isEmpty? vm.topRatedMovies:newList,
+                  listType: newList == vm.topRatedMovies
                       ? "Top Rated Movies"
                       : newList.isEmpty
                           ? "Trending Movies"
-                          : "Trending Movies")
+                          : "Trending Movies",context: context)
             ],
           );
         }));
@@ -105,21 +113,21 @@ toggleButton({required String buttonName}) {
   );
 }
 
-showList(
-    {required PopularMovieListViewModel vm, list, required String listname}) {
+Widget getMoviesList(
+    {required PopularMovieListViewModel vm,required List<Result> movieList, required String listType,required BuildContext context}) {
   return Container(
     padding: const EdgeInsets.all(10),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         modified_text(
-          text: listname,
+          text: listType,
           size: 26,
         ),
         addVerticalSize(),
         GridCustom(
           vm: vm,
-          list: list,
+          list: movieList,
           mainHeight: 900.0,
         ),
       ],

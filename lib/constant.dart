@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'model/popularMovies.dart';
+
 
 final String apiKey='91d7d40ef6cd4a35e4b291baa77dd09a';
 
@@ -8,7 +10,7 @@ final String apiReadAccessToken='eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MWQ3ZDQwZWY2Y2
 final Color kbackgroundColor=Colors.black;
 
 TextEditingController textController=TextEditingController();
-List newList=[];
+
 
 addVerticalSize(){
   return const SizedBox(height: 10,);
