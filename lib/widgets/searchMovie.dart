@@ -20,13 +20,19 @@ class _SearchMoviesState extends State<SearchMovies> {
       padding: const EdgeInsets.all(8.0),
       child: TextField(
           controller: widget.controller,
-          style:TextStyle(
-              color: const Color(0xff666666),
+          onEditingComplete: (){
+            FocusScope.of(context).unfocus();
+          },
+        onTapOutside: (c){
+            FocusScope.of(context).unfocus();
+        },
+          style:const TextStyle(
+              color: Color(0xff666666),
               fontWeight: FontWeight.w300,
               fontSize: 16.0),
           decoration: InputDecoration(isDense: true,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-              contentPadding: EdgeInsets.only(left: 20),focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+              contentPadding: const EdgeInsets.only(left: 20),focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
               suffixIcon: InkWell(
                 onTap: widget.onTap,
                 child: Row(
