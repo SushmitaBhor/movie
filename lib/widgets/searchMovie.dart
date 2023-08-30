@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constant.dart';
+import '../utils/constant.dart';
 
 class SearchMovies extends StatefulWidget {
  void Function(String)? onItemChanged;

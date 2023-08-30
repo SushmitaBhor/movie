@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import '../model/popularMovies.dart';
+import '../model/MoviesResponse.dart';
 import '../web_services/webService.dart';
 
-class PopularMovieListViewModel extends ChangeNotifier {
-  List<Result> popularMovies=[] ;
-  List<Result> topRatedMovies=[] ;
-  List<Result> searchedMovies=[] ;
+class MovieListViewModel extends ChangeNotifier {
+  List<Movie> popularMovies=[] ;
+  List<Movie> topRatedMovies=[] ;
+  List<Movie> searchedMovies=[] ;
 
   fetchMovies(String keyword) async {
-    final results =  await Webservice().fetchMovies(keyword);
+    final results =  await Webservice().fetchPopularMovies(keyword);
     popularMovies = results.map((item) => item).toList();
     notifyListeners();
   }
