@@ -23,13 +23,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
 
-  List popularmovies = [];
-  List topratedmovies = [];
-  List tv = [];
+  @override
+  State<Home> createState() => _HomeState();
+}
 
+class _HomeState extends State<Home> {
   final List<bool> _selections = List.generate(2, (i) => false);
 
   @override
@@ -46,30 +47,32 @@ class Home extends StatelessWidget {
           return ListView(
             shrinkWrap: true,
             children: [
-              // SearchMovies(onItemChanged: (v){}),
-              // addVerticalSize(),
-              // ToggleButtons(
-              //   isSelected: _selections,
-              //   onPressed: (int index) {
-              //       _selections[index] = !_selections[index];
-              //
-              //       if (index == 0 && _selections[index]) {
-              //
-              //
-              //       } else if (index == 1 && !_selections[index]) {
-              //         newList = topratedmovies;
-              //       }
-              //   },
-              //   children: [
-              //     toggleButton(buttonName: "Most Popular"),
-              //     toggleButton(buttonName: "Top Rated"),
-              //
-              //   ],
-              // ),
+              SearchMovies(onItemChanged: (v){}),
+              addVerticalSize(),
+              ToggleButtons(
+                isSelected: _selections,
+                onPressed: (int index) {
+                  setState((){
+                    _selections[index] = !_selections[index];
+
+                    if (index == 0 && _selections[index]) {
+                      newList = vm.popularMovies;
+
+                    } else if (index == 1 && !_selections[index]) {
+                      newList = vm.topRatedMovies;
+                    }
+                  });
+                },
+                children: [
+                  toggleButton(buttonName: "Most Popular"),
+                  toggleButton(buttonName: "Top Rated"),
+
+                ],
+              ),
 
               showList(
                   vm: vm,
-                  list: vm.popularMovies,
+                  list:newList.isEmpty ? vm.popularMovies:newList,
                   listname: newList == vm.popularMovies
                       ? "Most Popular Movies"
                       : newList.isEmpty
@@ -77,7 +80,7 @@ class Home extends StatelessWidget {
                           : "Top Rated Movies"),
               showList(
                   vm: vm,
-                  list: vm.topRatedMovies,
+                  list:newList.isEmpty? vm.topRatedMovies:newList,
                   listname: newList == vm.topRatedMovies
                       ? "Top Rated Movies"
                       : newList.isEmpty
