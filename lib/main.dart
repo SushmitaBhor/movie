@@ -70,13 +70,13 @@ class _HomeState extends State<Home> {
 
                   if (index == 0 && _selections[index]) {
                     setState(() {
-                      vm.topRatedMovies = vm.popularMovies;
-                      vm.searchedMovies = vm.popularMovies;
+
+                      vm.fetchMovies('iron man');
                     });
                   } else if (index == 1 && !_selections[index]) {
                     setState(() {
-                      vm.popularMovies = vm.topRatedMovies;
-                      vm.searchedMovies = vm.topRatedMovies;
+
+                      vm.fetchTopRatedMovies('iron man');
                     });
                   }
                 },
